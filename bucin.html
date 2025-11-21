@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Rayuan Gombal Interaktif Spesial Untukmu 🌟</title>
+    <style>
+        /* --- CSS STYLING ROMANTIS DAN HATI --- */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Times New Roman', serif;
+            color: #311b92; 
+            overflow: hidden;
+            flex-direction: column;
+            
+            /* --- PERUBAHAN UTAMA: WALLPAPER ROMANTIS --- */
+            background-image: url('https://images.unsplash.com/photo-1549491684-2598367d36c2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover; /* Pastikan gambar menutupi seluruh layar */
+            background-position: center;
+            background-attachment: fixed; /* Membuat wallpaper tetap saat scroll (opsional) */
+        }
+
+        .container {
+            text-align: center;
+            /* Mengurangi opacity background agar wallpaper terlihat sedikit */
+            background: rgba(255, 255, 255, 0.85); 
+            padding: 50px 70px; /* Diperbesar */
+            border-radius: 30px; /* Lebih Melengkung */
+            box-shadow: 0 15px 50px rgba(74, 20, 140, 0.5); 
+            max-width: 95%;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #7b1fa2; 
+            font-size: 3.5em; /* Diperbesar */
+            margin-bottom: 25px;
+        }
+        
+        p { /* Teks pendukung */
+            font-size: 1.2em;
+        }
+
+        #quiz-box {
+            min-height: 180px; /* Diperbesar */
+            transition: opacity 0.5s ease;
+        }
+
+        .pertanyaan {
+            font-size: 2.2em; /* Diperbesar */
+            color: #4527a0; 
+            font-weight: bold;
+            margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .jawaban {
+            color: #d81b60; 
+            font-size: 1.8em; /* Diperbesar */
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            margin-top: 20px;
+        }
+        
+        /* Gaya Tombol Diperbesar */
+        #lanjut-btn, #stop-btn {
+            padding: 15px 30px; /* Diperbesar */
+            margin: 10px; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 1.2em; /* Diperbesar */
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        #lanjut-btn {
+            background-color: #e91e63;
+            color: white; 
+        }
+        #lanjut-btn:hover {
+            background-color: #d81b60;
+        }
+        #stop-btn {
+            background-color: #6a1b9a;
+            color: white;
+            opacity: 0.5;
+            cursor: default;
+        }
+        
+        #pesan-ajakan {
+            font-size: 1.5em !important; /* Diperbesar */
+            color: #7b1fa2 !important; 
+            font-weight: 600 !important;
+        }
+
+        /* Hati Bergerak (Dipertahankan) */
+        .heart-confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #ff80ab; 
+            opacity: 0.8;
+            transform: rotate(-45deg);
+            z-index: 0;
+            animation: float-up linear infinite;
+        }
+
+        .heart-confetti::before, .heart-confetti::after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #ff80ab;
+            border-radius: 50%;
+        }
+
+        .heart-confetti::before { top: -7.5px; left: 0; }
+        .heart-confetti::after { left: 7.5px; top: 0; }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(-45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(-45deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>✨ Rayuan Gombal Interaktif Spesial Untukmu ✨</h1>
+        <p style="font-style: italic; color: #5d4037;">Siapkan hatimu! Setelah ini, kamu harus memutuskan untuk lanjut digombalin atau enggak!</p>
+        
+        <div id="quiz-box">
+            <div id="pertanyaan-display" class="pertanyaan"></div>
+            <div id="jawaban-display" class="jawaban"></div>
+            
+            <div id="konfirmasi-box" style="margin-top: 20px; opacity: 0; transition: opacity 0.5s ease;">
+                <p id="pesan-ajakan"></p>
+                <button id="lanjut-btn">Lanjut Gombal (Ya!)</button>
+                <button id="stop-btn" disabled>Udah Meleleh (Stop)</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. DATA TEBAK-TEBAKAN GOMBAL ---
+            const tebakans = [
+                {
+                    pertanyaan: "Kamu tahu enggak, apa bedanya kamu sama jam 12 malam?",
+                    jawaban: "Kalau jam 12 malam itu **waktu** orang tidur, kalau kamu **waktu** orang rindu. 🥺"
+                },
+                {
+                    pertanyaan: "Aku enggak belajar Fisika, tapi aku tahu rumus ini: Gaya (F) = m * a.",
+                    jawaban: "Itu salah! Rumus yang benar: **F**oto **m**u * **a**dalah pengalih duniaku. 💖"
+                },
+                {
+                    pertanyaan: "Seandainya aku punya pabrik, aku cuma akan buat satu barang. Kira-kira apa?",
+                    jawaban: "Bukan pabrik, tapi **Pabrik Cincin** untuk melamarmu. 💍"
+                },
+                {
+                    pertanyaan: "Kamu itu seperti Google, ya?",
+                    jawaban: "Karena semua yang aku cari dan butuhkan, **berakhir di kamu**. 🔍"
+                },
+                {
+                    pertanyaan: "Tahu enggak, kenapa aku suka banget bau bensin?",
+                    jawaban: "Karena setiap tetes bensin mengingatkanku pada **perjalanan cintaku denganmu**. 🛣️"
+                }
+            ];
+            
+            // --- 2. DATA PESAN AJAKAN VARIATIF ---
+            const pesanAjakan = [
+                "Hatiku masih kuat nih buat gombalin kamu lagi. Mau dilanjut, enggak? 😉",
+                "Gombalan selanjutnya dijamin bikin meleleh! Siap untuk ronde berikutnya? ✨",
+                "Jantungku berdebar nunggu jawabanmu. Mau digombalin lagi atau udah capek senyum-senyum? 🥰",
+                "Aku masih punya stok rayuan maut. Mau nambah lagi, Sayang? 😜",
+                "Sisa satu gombalan terkuat! Yakin mau dilewatin? Tekan Lanjut! 💋"
+            ];
+            
+            // --- 3. PENGAMBILAN ELEMEN DOM ---
+            const quizBox = document.getElementById('quiz-box');
+            const pertanyaanDisplay = document.getElementById('pertanyaan-display');
+            const jawabanDisplay = document.getElementById('jawaban-display');
+            const konfirmasiBox = document.getElementById('konfirmasi-box');
+            const pesanAjakanDisplay = document.getElementById('pesan-ajakan');
+            const lanjutBtn = document.getElementById('lanjut-btn');
+
+            let indexTebakan = 0;
+            
+            // --- 4. FUNGSI UTAMA: MENAMPILKAN TEBAKAN ---
+            function tampilkanTebakan() {
+                konfirmasiBox.style.opacity = 0;
+                
+                if (indexTebakan < tebakans.length) {
+                    const data = tebakans[indexTebakan];
+                    
+                    pertanyaanDisplay.style.opacity = 0; 
+                    jawabanDisplay.style.opacity = 0;
+                    
+                    setTimeout(() => {
+                        pertanyaanDisplay.textContent = data.pertanyaan;
+                        jawabanDisplay.textContent = data.jawaban;
+                        pertanyaanDisplay.style.opacity = 1; 
+                    }, 500); 
+
+                    
+                    setTimeout(() => {
+                        jawabanDisplay.style.opacity = 1; 
+
+                        setTimeout(() => {
+                            const pesanIndex = indexTebakan < pesanAjakan.length ? indexTebakan : pesanAjakan.length - 1; 
+                            pesanAjakanDisplay.textContent = pesanAjakan[pesanIndex];
+                            
+                            konfirmasiBox.style.opacity = 1; 
+                        }, 3000); 
+
+                    }, 3000); 
+
+                } else {
+                    quizBox.innerHTML = '<p style="font-size: 2.5em; color: #7b1fa2;">💖 Semua rayuan gombal sudah habis! Tapi cintaku padamu takkan pernah habis. I love you! 💖</p>';
+                }
+            }
+            
+            // --- 5. EVENT HANDLER TOMBOL LANJUT ---
+            lanjutBtn.addEventListener('click', () => {
+                indexTebakan++; 
+                lanjutBtn.disabled = true;
+                setTimeout(() => { lanjutBtn.disabled = false; }, 1000);
+                
+                tampilkanTebakan(); 
+            });
+
+            // Mulai rangkaian tebak-tebakan
+            tampilkanTebakan();
+
+
+            // --- 6. LOGIKA HATI BERGERAK (Confetti) ---
+            const body = document.body;
+            const heartsCount = 40; 
+
+            for (let i = 0; i < heartsCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-confetti');
+                heart.style.left = `${Math.random() * 100}vw`; 
+                heart.style.animationDuration = `${Math.random() * 10 + 5}s`; 
+                heart.style.animationDelay = `${Math.random() * 5}s`; 
+                body.appendChild(heart);
+            }
+        });
+    </script>
+</body>
+</html>
